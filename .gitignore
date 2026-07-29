@@ -1,21 +1,8 @@
-# dependencies
 node_modules/
-
-# environment variables (NEVER commit this, has DB password/API keys)
 .env
-
-# uploaded files (don't commit user uploads to git)
-uploads/*
-!uploads/.gitkeep
-
-# logs
 *.log
 npm-debug.log*
-
-# OS files
 .DS_Store
 Thumbs.db
-
-# editor
 .vscode/
 .idea/

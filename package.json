@@ -1,0 +1,32 @@
+{
+  "name": "pern-file-storage-practice",
+  "version": "1.0.0",
+  "description": "Practicing file upload, download, and soft delete in Express with Multer, PostgreSQL, and Cloudinary. Includes path traversal protection and a production-style folder structure.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LMTanjil/pern-file-storage-practice.git"
+  },
+  "keywords": [],
+  "author": "Tanjil",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/LMTanjil/pern-file-storage-practice/issues"
+  },
+  "homepage": "https://github.com/LMTanjil/pern-file-storage-practice#readme",
+  "dependencies": {
+    "cloudinary": "^2.10.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "multer": "^2.2.0",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
