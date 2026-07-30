@@ -1,5 +1,5 @@
 import {cloudinary} from '../config/cloudinary.config.js';
-import {insertFile} from "../repositories/upload.repository.js";
+import {insertFile} from "../repositories/files.repository.js";
 import {formatFileSize}from "../utils/formatFileSize.js";
 
 export const uploadToCloudinary = (fileBuffer) => {

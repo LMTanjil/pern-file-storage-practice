@@ -15,3 +15,10 @@ export const getAllFiles = async () => {
     );
     return result.rows;
 }
+
+export const getFileById = async (id) => {
+    const result = await pool.query(
+        `SELECT * FROM files WHERE id= $1 AND deleted_at IS NULL`,
+    )
+    return result.rows[0];
+}

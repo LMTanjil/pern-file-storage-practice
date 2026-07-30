@@ -1,5 +1,5 @@
-// src/controllers/upload.controller.js
-import { processUpload } from '../services/upload.service.js';
+// src/controllers/files.controller.js
+import { processUpload } from '../services/files.service.js';
 
 export const uploadSingle = async (req, res) => {
     try {
