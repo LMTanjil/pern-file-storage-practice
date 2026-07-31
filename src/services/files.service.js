@@ -1,5 +1,5 @@
 import {cloudinary} from '../config/cloudinary.config.js';
-import {getAllFiles, getFileById, insertFile, restoreFile, softDelete} from "../repositories/files.repository.js";
+import {getAllFiles, getFileById, getOlderFileThan30Days, getTrashFile, insertFile, restoreFile, softDelete,permanentlyDeleteFile} from "../repositories/files.repository.js";
 import {formatFileSize} from "../utils/formatFileSize.js";
 import {AppError} from "../utils/AppError.js";
 
@@ -70,4 +70,31 @@ export const restoredDeletedFile = async (id) => {
         throw new AppError('File not found or already deleted', 404);
     }
     return restored;
+}
+
+export const fetchTrashFiles = async () => {
+    return await getTrashFile();
+}
+
+export const cleanupOldTrash = async () => {
+    const OldFiles = await getOlderFileThan30Days()
+    // console.log('Old files:', OldFiles);
+    const results = [];
+    for (const file of OldFiles) {
+        try{
+            await cloudinary.uploader.destroy(file.public_id);
+            await permanentlyDeleteFile(file.id);
+            results.push({
+                id: file.id,
+                status: 'deleted successfully',
+            })
+        }catch(err){
+            results.push({
+                id: file.id,
+                status: 'deleted failed',
+                error: err.message,
+            })
+        }
+    }
+    return results;
 }

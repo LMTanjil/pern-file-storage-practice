@@ -1,5 +1,5 @@
 // src/controllers/files.controller.js
-import {deleteFile, fetchAllFiles, fetchFileById, processUpload, processUploadMultiple, restoredDeletedFile} from '../services/files.service.js';
+import {cleanupOldTrash, deleteFile, fetchAllFiles, fetchFileById, fetchTrashFiles, processUpload, processUploadMultiple, restoredDeletedFile} from '../services/files.service.js';
 
 export const uploadSingle = async (req, res) => {
     try {
@@ -83,5 +83,30 @@ export const restoreFileHandler = async (req, res) => {
         })
     } catch (err) {
         res.status(err.statusCode || 500).json({ error: err.message });
+    }
+}
+
+export  const getTrashFilesHandler = async (req, res) => {
+    try{
+        const files = await fetchTrashFiles();
+        res.status(200).json({
+            count: files.length,
+            files: files
+        });
+    }catch(err){
+        res.status(500).json({ error: err.message });
+    }
+}
+
+export const cleanupTrashHandler = async (req, res) => {
+    try{
+        const result = await cleanupOldTrash();
+        res.status(200).json({
+            message: 'Cleaned trash',
+            processed: result.length,
+            result: result
+        })
+    }catch(err){
+        res.status(500).json({ error: err.message });
     }
 }
