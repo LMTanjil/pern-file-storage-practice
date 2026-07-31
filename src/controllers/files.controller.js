@@ -50,10 +50,7 @@ export const getFileByIdHandler = async (req, res) => {
         res.status(200).json({file})
 
     }catch (error) {
-        if(error.message.includes('File not found')) {
-            res.status(404).json({error: error.message});
-        }
-        res.status(500).json({ error: error.message });
+        res.status(error.statusCode || 500).json({ error: error.message });
     }
 }
 
@@ -65,11 +62,8 @@ export const deleteFileHandler = async (req, res) => {
             message: 'File deleted',
             file: deletedFile
         })
-    }catch (err) {
-        if (err.message === 'File not found or already deleted') {
-            return res.status(404).json({ error: err.message });
-        }
-        res.status(500).json({ error: err.message });
+    }catch (error) {
+        res.status(error.statusCode || 500).json({ error: error.message });
     }
 }
 

@@ -51,7 +51,7 @@ export const fetchAllFiles = async () => {
 export const fetchFileById = async (id) => {
     const file = await getFileById(id);
     if (!file) {
-        throw new Error(`Could not found file`);
+        throw new AppError(`Could not found file`,404);
     }
     return file;
 }
@@ -59,7 +59,7 @@ export const fetchFileById = async (id) => {
 export const deleteFile = async (id) => {
     const deleteFile = await softDelete(id);
     if (!deleteFile) {
-        throw new Error(`File not found or already deleted`);
+        throw new AppError(`File not found or already deleted`,404);
     }
     return deleteFile;
 }
