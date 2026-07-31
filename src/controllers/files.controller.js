@@ -1,5 +1,5 @@
 // src/controllers/files.controller.js
-import {fetchAllFiles, fetchFileById, processUpload} from '../services/files.service.js';
+import {deleteFile, fetchAllFiles, fetchFileById, processUpload, processUploadMultiple, restoredDeletedFile} from '../services/files.service.js';
 
 export const uploadSingle = async (req, res) => {
     try {
@@ -15,6 +15,21 @@ export const uploadSingle = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const uploadMultiple = async (req, res) => {
+    try{
+        if(!req.files || req.files.length === 0) return res.status(400).json({ error: 'No files uploaded' });
+        const records = await processUploadMultiple(req.files);
+        res.status(200).json({
+            message: 'Upload successful',
+            count: records.length,
+            files: records
+
+        })
+    }catch(err){
+        res.status(500).json({ error: 'Error uploading files' });
+    }
+}
 
 export const getAllFilesHandler = async (req, res) => {
     try {
@@ -39,5 +54,34 @@ export const getFileByIdHandler = async (req, res) => {
             res.status(404).json({error: error.message});
         }
         res.status(500).json({ error: error.message });
+    }
+}
+
+export const deleteFileHandler = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const deletedFile = await deleteFile(id);
+        res.status(200).json({
+            message: 'File deleted',
+            file: deletedFile
+        })
+    }catch (err) {
+        if (err.message === 'File not found or already deleted') {
+            return res.status(404).json({ error: err.message });
+        }
+        res.status(500).json({ error: err.message });
+    }
+}
+
+export const restoreFileHandler = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const restoredFile = await restoredDeletedFile(id);
+        res.status(200).json({
+            message: 'Restored file successfully',
+            file: restoredFile
+        })
+    } catch (err) {
+        res.status(err.statusCode || 500).json({ error: err.message });
     }
 }

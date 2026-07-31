@@ -23,3 +23,22 @@ export const getFileById = async (id) => {
     )
     return result.rows[0];
 }
+
+export const softDelete = async (id) => {
+    const result = await pool.query(
+        `UPDATE files
+         SET deleted_at = NOW()
+         WHERE id = $1
+           AND deleted_at IS NULL RETURNING *`,
+        [id]
+    )
+    return result.rows[0];
+}
+export const restoreFile = async (id) => {
+    const result = await pool.query(
+        `UPDATE files SET deleted_at = NULL WHERE id = $1 AND deleted_at IS NOT NULL RETURNING *`,
+        [id]
+    )
+    console.log('Restore query result:', result.rows);
+    return result.rows[0];
+}
